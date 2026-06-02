@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kevin Is Gooning Too Much</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;700&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --red: #ff2222;
+      --dark: #0a0a0a;
+      --glow: #ff4444;
+    }
+
+    body {
+      background: var(--dark);
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+    }
+
+    /* animated scanlines */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.15) 2px,
+        rgba(0,0,0,0.15) 4px
+      );
+      pointer-events: none;
+      z-index: 100;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .label {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(1rem, 3vw, 1.4rem);
+      letter-spacing: 0.3em;
+      color: #888;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3.5rem, 14vw, 10rem);
+      line-height: 0.95;
+      color: var(--red);
+      text-shadow: 0 0 30px var(--glow), 0 0 80px rgba(255,50,50,0.4);
+      animation: flicker 3s infinite;
+    }
+
+    h1 span {
+      display: block;
+      color: #fff;
+      text-shadow: 0 0 20px rgba(255,255,255,0.3);
+    }
+
+    @keyframes flicker {
+      0%, 95%, 100% { opacity: 1; }
+      96% { opacity: 0.85; }
+      97% { opacity: 1; }
+      98% { opacity: 0.7; }
+      99% { opacity: 1; }
+    }
+
+    .counter-section {
+      margin-top: 3rem;
+      text-align: center;
+    }
+
+    .counter-label {
+      font-size: 0.85rem;
+      letter-spacing: 0.2em;
+      color: #555;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .counter {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(4rem, 18vw, 12rem);
+      color: var(--red);
+      text-shadow: 0 0 40px var(--glow);
+      line-height: 1;
+      transition: transform 0.1s;
+    }
+
+    .counter.bump {
+      transform: scale(1.12);
+    }
+
+    .btn {
+      margin-top: 1.5rem;
+      padding: 1rem 2.5rem;
+      background: var(--red);
+      color: #fff;
+      border: none;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.6rem;
+      letter-spacing: 0.15em;
+      cursor: pointer;
+      border-radius: 4px;
+      box-shadow: 0 0 20px rgba(255,50,50,0.5);
+      transition: background 0.1s, transform 0.1s, box-shadow 0.1s;
+    }
+
+    .btn:hover {
+      background: #ff4444;
+      box-shadow: 0 0 40px rgba(255,50,50,0.8);
+    }
+
+    .btn:active {
+      transform: scale(0.96);
+    }
+
+    .btn:disabled {
+      background: #333;
+      color: #666;
+      box-shadow: none;
+      cursor: not-allowed;
+    }
+
+    .intervention {
+      margin-top: 1rem;
+      font-size: 0.8rem;
+      color: #444;
+      letter-spacing: 0.1em;
+    }
+
+    .warning-banner {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: var(--red);
+      color: #fff;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.4rem;
+      letter-spacing: 0.2em;
+      text-align: center;
+      padding: 0.6rem 1rem;
+      transform: translateY(-100%);
+      transition: transform 0.3s ease;
+      z-index: 200;
+    }
+
+    .warning-banner.show {
+      transform: translateY(0);
+    }
+
+    .evidence {
+      margin-top: 4rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      max-width: 800px;
+      padding: 0 1rem;
+    }
+
+    .evidence-card {
+      background: #111;
+      border: 1px solid #222;
+      border-radius: 6px;
+      padding: 1.2rem;
+      text-align: center;
+      transition: border-color 0.2s;
+    }
+
+    .evidence-card:hover {
+      border-color: var(--red);
+    }
+
+    .evidence-card .num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.8rem;
+      color: var(--red);
+      text-shadow: 0 0 15px var(--glow);
+    }
+
+    .evidence-card .desc {
+      font-size: 0.78rem;
+      color: #666;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-top: 0.3rem;
+    }
+
+    footer {
+      margin-top: 5rem;
+      padding: 2rem;
+      font-size: 0.7rem;
+      color: #333;
+      text-align: center;
+      letter-spacing: 0.1em;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="warning-banner" id="banner">⚠️ KEVIN INTERVENTION REQUIRED ⚠️</div>
+
+  <div class="hero">
+    <p class="label">Live Report</p>
+    <h1>
+      KEVIN
+      <span>IS GOONING</span>
+      TOO MUCH
+    </h1>
+  </div>
+
+  <div class="counter-section">
+    <p class="counter-label">Times Kevin has gooned today</p>
+    <div class="counter" id="counter">0</div>
+    <br />
+    <button class="btn" id="goon-btn" onclick="goon()">+ KEVIN GOONED AGAIN</button>
+    <p class="intervention" id="intervention-msg"></p>
+  </div>
+
+  <div class="evidence">
+    <div class="evidence-card">
+      <div class="num" id="stat-hours">0</div>
+      <div class="desc">Hours lost to gooning</div>
+    </div>
+    <div class="evidence-card">
+      <div class="num" id="stat-percent">0%</div>
+      <div class="desc">Of Kevin's day spent gooning</div>
+    </div>
+    <div class="evidence-card">
+      <div class="num" id="stat-productivity">100%</div>
+      <div class="desc">Productivity destroyed</div>
+    </div>
+  </div>
+
+  <footer>
+    This site was created because Kevin simply cannot stop.<br />
+    Please help Kevin. Kevin will not help himself.
+  </footer>
+
+  <script>
+    const MESSAGES = [
+      "bro please",
+      "kevin stop",
+      "kevin no",
+      "we're begging you",
+      "put the phone down kevin",
+      "this is not normal kevin",
+      "kevin your mom is calling",
+      "kevin you have work tomorrow",
+      "seek help immediately",
+      "KEVIN WHAT ARE YOU DOING",
+      "we've lost him",
+      "too far gone",
+      "call a priest",
+      "he's beyond saving",
+    ];
+
+    let count = parseInt(localStorage.getItem('kevin-count') || '0');
+    update(false);
+
+    function goon() {
+      count++;
+      localStorage.setItem('kevin-count', count);
+      update(true);
+
+      const banner = document.getElementById('banner');
+      if (count % 5 === 0) {
+        banner.classList.add('show');
+        setTimeout(() => banner.classList.remove('show'), 3000);
+      }
+    }
+
+    function update(bump) {
+      const el = document.getElementById('counter');
+      el.textContent = count;
+
+      if (bump) {
+        el.classList.add('bump');
+        setTimeout(() => el.classList.remove('bump'), 150);
+      }
+
+      const msg = document.getElementById('intervention-msg');
+      if (count > 0) {
+        msg.textContent = MESSAGES[Math.min(count - 1, MESSAGES.length - 1)];
+      }
+
+      document.getElementById('stat-hours').textContent = (count * 0.5).toFixed(1) + 'h';
+      document.getElementById('stat-percent').textContent = Math.min(100, count * 6) + '%';
+
+      const prod = Math.max(0, 100 - count * 8);
+      document.getElementById('stat-productivity').textContent = prod + '%';
+
+      if (count >= 13) {
+        document.getElementById('goon-btn').disabled = true;
+        document.getElementById('intervention-msg').textContent = "we've lost him entirely";
+      }
+    }
+  </script>
+</body>
+</html>
