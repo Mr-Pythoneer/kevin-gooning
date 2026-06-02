@@ -356,12 +356,12 @@
 
     <!-- TEA CARDS -->
     <div class="tea-section">
-      <div class="tea-card pink">
+      <div class="tea-card pink" onclick="carSound(this)" style="cursor:pointer">
         <div class="heart">🚗</div>
         <div class="names">Cars<br/>Are<br/>Cars</div>
         <div class="subtitle">they just are</div>
       </div>
-      <div class="tea-card blue">
+      <div class="tea-card blue" onclick="idiotSandwich(this)" style="cursor:pointer">
         <div class="heart">💀</div>
         <div class="names">A-DUM-<br/>SUNG</div>
         <div class="subtitle">say it out loud</div>
@@ -373,7 +373,7 @@
       <p class="counter-label">Times Kevin has gooned today</p>
       <div class="counter" id="counter">0</div>
       <br />
-      <button class="btn" onclick="goon()">+ KEVIN GOONED AGAIN</button>
+      <button class="btn" onclick="goon(); goonSound()">+ KEVIN GOONED AGAIN</button>
       <p class="intervention" id="intervention-msg"></p>
     </div>
 
@@ -470,6 +470,94 @@
       document.getElementById('stat-percent').textContent = Math.min(100, count * 6) + '%';
       document.getElementById('stat-productivity').textContent = Math.max(0, 100 - count * 8) + '%';
     }
+
+    // ── SOUNDS ──
+    const ctx = () => new (window.AudioContext || window.webkitAudioContext)();
+
+    function goonSound() {
+      const ac = ctx();
+      // low dirty moan oscillator
+      const osc = ac.createOscillator();
+      const gain = ac.createGain();
+      const dist = ac.createWaveShaper();
+
+      // distortion curve
+      const curve = new Float32Array(256);
+      for (let i = 0; i < 256; i++) {
+        const x = (i * 2) / 256 - 1;
+        curve[i] = (Math.PI + 200) * x / (Math.PI + 200 * Math.abs(x));
+      }
+      dist.curve = curve;
+
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(120, ac.currentTime);
+      osc.frequency.linearRampToValueAtTime(60, ac.currentTime + 0.4);
+      osc.frequency.linearRampToValueAtTime(90, ac.currentTime + 0.7);
+      osc.frequency.linearRampToValueAtTime(50, ac.currentTime + 1.1);
+
+      gain.gain.setValueAtTime(0.6, ac.currentTime);
+      gain.gain.linearRampToValueAtTime(0, ac.currentTime + 1.2);
+
+      osc.connect(dist);
+      dist.connect(gain);
+      gain.connect(ac.destination);
+      osc.start();
+      osc.stop(ac.currentTime + 1.2);
+    }
+
+    function carSound(el) {
+      el.style.transform = 'scale(0.96)';
+      setTimeout(() => el.style.transform = '', 120);
+
+      const ac = ctx();
+      // engine rumble: noise through a low-pass filter, pitched up then down
+      const bufSize = ac.sampleRate * 1.5;
+      const buf = ac.createBuffer(1, bufSize, ac.sampleRate);
+      const data = buf.getChannelData(0);
+      for (let i = 0; i < bufSize; i++) data[i] = Math.random() * 2 - 1;
+
+      const src = ac.createBufferSource();
+      src.buffer = buf;
+
+      const filter = ac.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(200, ac.currentTime);
+      filter.frequency.linearRampToValueAtTime(900, ac.currentTime + 0.3);
+      filter.frequency.linearRampToValueAtTime(400, ac.currentTime + 0.8);
+      filter.frequency.linearRampToValueAtTime(150, ac.currentTime + 1.4);
+      filter.Q.value = 8;
+
+      const gain = ac.createGain();
+      gain.gain.setValueAtTime(0.8, ac.currentTime);
+      gain.gain.linearRampToValueAtTime(0, ac.currentTime + 1.5);
+
+      src.connect(filter);
+      filter.connect(gain);
+      gain.connect(ac.destination);
+      src.start();
+    }
+
+    function idiotSandwich(el) {
+      el.style.transform = 'scale(0.96)';
+      setTimeout(() => el.style.transform = '', 120);
+
+      const utter = new SpeechSynthesisUtterance("YOU IDIOT SANDWICH");
+      utter.pitch = 0.8;
+      utter.rate = 0.85;
+      utter.volume = 1;
+      // try to pick a deep voice
+      const voices = speechSynthesis.getVoices();
+      const deep = voices.find(v => /daniel|alex|fred|ralph|bruce|gordon/i.test(v.name))
+                || voices.find(v => v.lang === 'en-US' || v.lang === 'en-GB')
+                || voices[0];
+      if (deep) utter.voice = deep;
+      speechSynthesis.cancel();
+      speechSynthesis.speak(utter);
+    }
+
+    // preload voices
+    speechSynthesis.getVoices();
+    speechSynthesis.onvoiceschanged = () => speechSynthesis.getVoices();
   </script>
 </body>
 </html>
