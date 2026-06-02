@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Kevin Is Gooning Too Much</title>
+  <title>The Exposé</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;700&display=swap');
 
@@ -11,6 +11,8 @@
 
     :root {
       --red: #ff2222;
+      --pink: #ff69b4;
+      --blue: #4488ff;
       --dark: #0a0a0a;
       --glow: #ff4444;
     }
@@ -27,7 +29,6 @@
       overflow-x: hidden;
     }
 
-    /* animated scanlines */
     body::before {
       content: '';
       position: fixed;
@@ -43,10 +44,89 @@
       z-index: 100;
     }
 
-    .hero {
-      text-align: center;
+    /* ── PASSWORD SCREEN ── */
+    #pw-screen {
+      position: fixed;
+      inset: 0;
+      background: #000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      gap: 1.2rem;
       padding: 2rem;
     }
+
+    #pw-screen h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2rem, 8vw, 4rem);
+      color: var(--red);
+      text-shadow: 0 0 30px var(--glow);
+      letter-spacing: 0.1em;
+      text-align: center;
+    }
+
+    #pw-screen p {
+      font-size: 0.85rem;
+      color: #555;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    #pw-input {
+      background: #111;
+      border: 2px solid #333;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 1.1rem;
+      padding: 0.8rem 1.4rem;
+      border-radius: 4px;
+      width: min(320px, 90vw);
+      outline: none;
+      text-align: center;
+      letter-spacing: 0.05em;
+      transition: border-color 0.2s;
+    }
+
+    #pw-input:focus { border-color: var(--red); }
+    #pw-input.wrong { border-color: var(--red); animation: shake 0.35s; }
+
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      20% { transform: translateX(-8px); }
+      40% { transform: translateX(8px); }
+      60% { transform: translateX(-6px); }
+      80% { transform: translateX(6px); }
+    }
+
+    #pw-btn {
+      padding: 0.8rem 2.5rem;
+      background: var(--red);
+      color: #fff;
+      border: none;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem;
+      letter-spacing: 0.15em;
+      cursor: pointer;
+      border-radius: 4px;
+      box-shadow: 0 0 20px rgba(255,50,50,0.5);
+      transition: background 0.1s, box-shadow 0.1s;
+    }
+
+    #pw-btn:hover { background: #ff4444; box-shadow: 0 0 40px rgba(255,50,50,0.8); }
+
+    #pw-error {
+      font-size: 0.8rem;
+      color: var(--red);
+      letter-spacing: 0.1em;
+      min-height: 1.2em;
+    }
+
+    /* ── MAIN CONTENT ── */
+    #main { display: none; width: 100%; flex-direction: column; align-items: center; }
+
+    .hero { text-align: center; padding: 2rem; }
 
     .label {
       font-family: 'Bebas Neue', sans-serif;
@@ -59,18 +139,14 @@
 
     h1 {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(3.5rem, 14vw, 10rem);
+      font-size: clamp(3rem, 12vw, 9rem);
       line-height: 0.95;
       color: var(--red);
       text-shadow: 0 0 30px var(--glow), 0 0 80px rgba(255,50,50,0.4);
       animation: flicker 3s infinite;
     }
 
-    h1 span {
-      display: block;
-      color: #fff;
-      text-shadow: 0 0 20px rgba(255,255,255,0.3);
-    }
+    h1 span { display: block; color: #fff; text-shadow: 0 0 20px rgba(255,255,255,0.3); }
 
     @keyframes flicker {
       0%, 95%, 100% { opacity: 1; }
@@ -80,10 +156,71 @@
       99% { opacity: 1; }
     }
 
-    .counter-section {
+    /* ── TEA CARDS ── */
+    .tea-section {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+      max-width: 860px;
+      padding: 0 1.5rem;
       margin-top: 3rem;
-      text-align: center;
+      width: 100%;
     }
+
+    .tea-card {
+      border-radius: 10px;
+      padding: 1.8rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tea-card.pink {
+      background: linear-gradient(135deg, #1a0010, #2a0020);
+      border: 1px solid #ff69b480;
+    }
+
+    .tea-card.blue {
+      background: linear-gradient(135deg, #00081a, #00122a);
+      border: 1px solid #4488ff80;
+    }
+
+    .tea-card .heart {
+      font-size: 3rem;
+      animation: heartbeat 1.2s infinite;
+    }
+
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      14% { transform: scale(1.2); }
+      28% { transform: scale(1); }
+      42% { transform: scale(1.15); }
+      70% { transform: scale(1); }
+    }
+
+    .tea-card .names {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2rem, 6vw, 3.2rem);
+      margin-top: 0.5rem;
+      letter-spacing: 0.05em;
+    }
+
+    .tea-card.pink .names { color: var(--pink); text-shadow: 0 0 20px #ff69b4; }
+    .tea-card.blue .names { color: var(--blue); text-shadow: 0 0 20px #4488ff; }
+
+    .tea-card .subtitle {
+      font-size: 0.78rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-top: 0.4rem;
+      color: #666;
+    }
+
+    .tea-card.pink .subtitle { color: #ff69b466; }
+    .tea-card.blue .subtitle { color: #4488ff66; }
+
+    /* ── COUNTER ── */
+    .counter-section { margin-top: 3rem; text-align: center; }
 
     .counter-label {
       font-size: 0.85rem;
@@ -102,9 +239,7 @@
       transition: transform 0.1s;
     }
 
-    .counter.bump {
-      transform: scale(1.12);
-    }
+    .counter.bump { transform: scale(1.12); }
 
     .btn {
       margin-top: 1.5rem;
@@ -121,21 +256,8 @@
       transition: background 0.1s, transform 0.1s, box-shadow 0.1s;
     }
 
-    .btn:hover {
-      background: #ff4444;
-      box-shadow: 0 0 40px rgba(255,50,50,0.8);
-    }
-
-    .btn:active {
-      transform: scale(0.96);
-    }
-
-    .btn:disabled {
-      background: #333;
-      color: #666;
-      box-shadow: none;
-      cursor: not-allowed;
-    }
+    .btn:hover { background: #ff4444; box-shadow: 0 0 40px rgba(255,50,50,0.8); }
+    .btn:active { transform: scale(0.96); }
 
     .intervention {
       margin-top: 1rem;
@@ -146,9 +268,7 @@
 
     .warning-banner {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
+      top: 0; left: 0; right: 0;
       background: var(--red);
       color: #fff;
       font-family: 'Bebas Neue', sans-serif;
@@ -161,10 +281,9 @@
       z-index: 200;
     }
 
-    .warning-banner.show {
-      transform: translateY(0);
-    }
+    .warning-banner.show { transform: translateY(0); }
 
+    /* ── STATS ── */
     .evidence {
       margin-top: 4rem;
       display: grid;
@@ -172,6 +291,7 @@
       gap: 1rem;
       max-width: 800px;
       padding: 0 1rem;
+      width: 100%;
     }
 
     .evidence-card {
@@ -183,9 +303,7 @@
       transition: border-color 0.2s;
     }
 
-    .evidence-card:hover {
-      border-color: var(--red);
-    }
+    .evidence-card:hover { border-color: var(--red); }
 
     .evidence-card .num {
       font-family: 'Bebas Neue', sans-serif;
@@ -214,46 +332,99 @@
 </head>
 <body>
 
-  <div class="warning-banner" id="banner">⚠️ KEVIN INTERVENTION REQUIRED ⚠️</div>
-
-  <div class="hero">
-    <p class="label">Live Report</p>
-    <h1>
-      KEVIN
-      <span>IS GOONING</span>
-      TOO MUCH
-    </h1>
+  <!-- PASSWORD SCREEN -->
+  <div id="pw-screen">
+    <h2>CLASSIFIED INTEL<br/>ENTER PASSWORD</h2>
+    <p>Authorized personnel only</p>
+    <input id="pw-input" type="password" placeholder="password..." onkeydown="if(event.key==='Enter')checkPw()" />
+    <button id="pw-btn" onclick="checkPw()">ENTER</button>
+    <p id="pw-error"></p>
   </div>
 
-  <div class="counter-section">
-    <p class="counter-label">Times Kevin has gooned today</p>
-    <div class="counter" id="counter">0</div>
-    <br />
-    <button class="btn" id="goon-btn" onclick="goon()">+ KEVIN GOONED AGAIN</button>
-    <p class="intervention" id="intervention-msg"></p>
-  </div>
+  <!-- MAIN CONTENT -->
+  <div id="main">
 
-  <div class="evidence">
-    <div class="evidence-card">
-      <div class="num" id="stat-hours">0</div>
-      <div class="desc">Hours lost to gooning</div>
-    </div>
-    <div class="evidence-card">
-      <div class="num" id="stat-percent">0%</div>
-      <div class="desc">Of Kevin's day spent gooning</div>
-    </div>
-    <div class="evidence-card">
-      <div class="num" id="stat-productivity">100%</div>
-      <div class="desc">Productivity destroyed</div>
-    </div>
-  </div>
+    <div class="warning-banner" id="banner">⚠️ KEVIN INTERVENTION REQUIRED ⚠️</div>
 
-  <footer>
-    This site was created because Kevin simply cannot stop.<br />
-    Please help Kevin. Kevin will not help himself.
-  </footer>
+    <div class="hero">
+      <p class="label">Top Secret Exposé</p>
+      <h1>
+        THE BOYS
+        <span>ARE COOKED</span>
+      </h1>
+    </div>
+
+    <!-- TEA CARDS -->
+    <div class="tea-section">
+      <div class="tea-card pink">
+        <div class="heart">💗</div>
+        <div class="names">Varnit<br/>luvs<br/>Amy Gu</div>
+        <div class="subtitle">confirmed & on record</div>
+      </div>
+      <div class="tea-card blue">
+        <div class="heart">💙</div>
+        <div class="names">Luis<br/>luvs<br/>Joey</div>
+        <div class="subtitle">we all know it</div>
+      </div>
+    </div>
+
+    <!-- KEVIN COUNTER -->
+    <div class="counter-section">
+      <p class="counter-label">Times Kevin has gooned today</p>
+      <div class="counter" id="counter">0</div>
+      <br />
+      <button class="btn" onclick="goon()">+ KEVIN GOONED AGAIN</button>
+      <p class="intervention" id="intervention-msg"></p>
+    </div>
+
+    <div class="evidence">
+      <div class="evidence-card">
+        <div class="num" id="stat-hours">0</div>
+        <div class="desc">Hours lost to gooning</div>
+      </div>
+      <div class="evidence-card">
+        <div class="num" id="stat-percent">0%</div>
+        <div class="desc">Of Kevin's day spent gooning</div>
+      </div>
+      <div class="evidence-card">
+        <div class="num" id="stat-productivity">100%</div>
+        <div class="desc">Productivity destroyed</div>
+      </div>
+    </div>
+
+    <footer>
+      This site is classified. Kevin cannot stop. Varnit is down bad.<br />
+      Luis won't admit it. We all see it.
+    </footer>
+
+  </div>
 
   <script>
+    // ── PASSWORD ──
+    const PASSWORD = "Gooning In Ohio";
+
+    function checkPw() {
+      const val = document.getElementById('pw-input').value;
+      if (val === PASSWORD) {
+        document.getElementById('pw-screen').style.display = 'none';
+        document.getElementById('main').style.display = 'flex';
+        sessionStorage.setItem('unlocked', '1');
+      } else {
+        const inp = document.getElementById('pw-input');
+        inp.classList.remove('wrong');
+        void inp.offsetWidth;
+        inp.classList.add('wrong');
+        document.getElementById('pw-error').textContent = 'wrong. try harder.';
+        inp.value = '';
+      }
+    }
+
+    if (sessionStorage.getItem('unlocked') === '1') {
+      document.getElementById('pw-screen').style.display = 'none';
+      document.getElementById('main').style.display = 'flex';
+    }
+
+    // ── COUNTER ──
     const MESSAGES = [
       "bro please",
       "kevin stop",
@@ -269,43 +440,38 @@
       "too far gone",
       "call a priest",
       "he's beyond saving",
+      "varnit is also concerned",
+      "even luis is worried",
+      "amy gu has seen this",
+      "joey is disappointed",
     ];
 
     let count = parseInt(localStorage.getItem('kevin-count') || '0');
-    update(false);
+    updateCounter(false);
 
     function goon() {
       count++;
       localStorage.setItem('kevin-count', count);
-      update(true);
-
-      const banner = document.getElementById('banner');
+      updateCounter(true);
       if (count % 5 === 0) {
+        const banner = document.getElementById('banner');
         banner.classList.add('show');
         setTimeout(() => banner.classList.remove('show'), 3000);
       }
     }
 
-    function update(bump) {
+    function updateCounter(bump) {
       const el = document.getElementById('counter');
       el.textContent = count;
-
       if (bump) {
         el.classList.add('bump');
         setTimeout(() => el.classList.remove('bump'), 150);
       }
-
       const msg = document.getElementById('intervention-msg');
-      if (count > 0) {
-        msg.textContent = MESSAGES[(count - 1) % MESSAGES.length];
-      }
-
+      if (count > 0) msg.textContent = MESSAGES[(count - 1) % MESSAGES.length];
       document.getElementById('stat-hours').textContent = (count * 0.5).toFixed(1) + 'h';
       document.getElementById('stat-percent').textContent = Math.min(100, count * 6) + '%';
-
-      const prod = Math.max(0, 100 - count * 8);
-      document.getElementById('stat-productivity').textContent = prod + '%';
-
+      document.getElementById('stat-productivity').textContent = Math.max(0, 100 - count * 8) + '%';
     }
   </script>
 </body>
