@@ -297,7 +297,7 @@
 
       const msg = document.getElementById('intervention-msg');
       if (count > 0) {
-        msg.textContent = MESSAGES[Math.min(count - 1, MESSAGES.length - 1)];
+        msg.textContent = MESSAGES[(count - 1) % MESSAGES.length];
       }
 
       document.getElementById('stat-hours').textContent = (count * 0.5).toFixed(1) + 'h';
@@ -306,10 +306,6 @@
       const prod = Math.max(0, 100 - count * 8);
       document.getElementById('stat-productivity').textContent = prod + '%';
 
-      if (count >= 13) {
-        document.getElementById('goon-btn').disabled = true;
-        document.getElementById('intervention-msg').textContent = "we've lost him entirely";
-      }
     }
   </script>
 </body>
